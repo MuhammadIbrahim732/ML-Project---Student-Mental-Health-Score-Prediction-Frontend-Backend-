@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pydantic
+pandas
+numpy
+joblib
+scikit-learn
+# If your pipeline uses xgboost / lightgbm / catboost, add it here.
+# IMPORTANT: pin scikit-learn, pandas and numpy to the exact versions you
+# trained the .pkl with (run `pip freeze` locally), e.g. scikit-learn==1.5.2

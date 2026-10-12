@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Mental Health Score</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="intro">
+      <h1>Student mental health score</h1>
+      <p>Describe a student's background, social media habits and daily routine. The model estimates a mental health score from 0 to 10.</p>
+    </header>
+
+    <div class="layout">
+      <form id="predict-form" class="panel" novalidate>
+
+        <fieldset>
+          <legend>Background</legend>
+          <div class="grid">
+            <div class="field">
+              <label for="Age">Age</label>
+              <input type="number" id="Age" name="Age" min="10" max="100" value="21" required />
+            </div>
+
+            <div class="field">
+              <span class="label">Gender</span>
+              <div class="segmented" role="radiogroup" aria-label="Gender">
+                <input type="radio" id="g-male" name="Gender" value="Male" checked /><label for="g-male">Male</label>
+                <input type="radio" id="g-female" name="Gender" value="Female" /><label for="g-female">Female</label>
+                <input type="radio" id="g-other" name="Gender" value="Other" /><label for="g-other">Other</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="Country">Country</label>
+              <input type="text" id="Country" name="Country" list="countries" placeholder="Start typing a country" autocomplete="off" required />
+              <datalist id="countries"></datalist>
+            </div>
+
+            <div class="field">
+              <label for="Academic_Level">Academic level</label>
+              <select id="Academic_Level" name="Academic_Level">
+                <option>High School</option>
+                <option selected>Undergraduate</option>
+                <option>Graduate</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Social media use</legend>
+          <div class="grid">
+            <div class="field">
+              <label for="Most_Used_Platform">Most used platform</label>
+              <select id="Most_Used_Platform" name="Most_Used_Platform">
+                <option>Facebook</option>
+                <option selected>Instagram</option>
+                <option>TikTok</option>
+                <option>YouTube</option>
+                <option>WhatsApp</option>
+                <option>Snapchat</option>
+                <option>Twitter</option>
+                <option>LinkedIn</option>
+                <option>WeChat</option>
+                <option>LINE</option>
+                <option>KakaoTalk</option>
+                <option>VKontakte</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="Purpose_Of_Use">Main purpose</label>
+              <select id="Purpose_Of_Use" name="Purpose_Of_Use">
+                <option>Education</option>
+                <option selected>Entertainment</option>
+                <option>Networking</option>
+                <option>News</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="Daily_Unlocks">Phone unlocks per day</label>
+              <input type="number" id="Daily_Unlocks" name="Daily_Unlocks" min="0" value="60" required />
+            </div>
+
+            <div class="field slider">
+              <label for="Avg_Daily_Usage_Hours">Daily usage <output for="Avg_Daily_Usage_Hours">4 h</output></label>
+              <input type="range" id="Avg_Daily_Usage_Hours" name="Avg_Daily_Usage_Hours" min="0" max="24" step="0.5" value="4" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Daily routine</legend>
+          <div class="grid">
+            <div class="field slider">
+              <label for="Sleep_Hours_Per_Night">Sleep per night <output for="Sleep_Hours_Per_Night">7 h</output></label>
+              <input type="range" id="Sleep_Hours_Per_Night" name="Sleep_Hours_Per_Night" min="0" max="24" step="0.5" value="7" />
+            </div>
+
+            <div class="field slider">
+              <label for="Study_Hours">Study time <output for="Study_Hours">3 h</output></label>
+              <input type="range" id="Study_Hours" name="Study_Hours" min="0" max="24" step="0.5" value="3" />
+            </div>
+
+            <div class="field slider">
+              <label for="Physical_Activity_Hours">Physical activity <output for="Physical_Activity_Hours">1 h</output></label>
+              <input type="range" id="Physical_Activity_Hours" name="Physical_Activity_Hours" min="0" max="24" step="0.5" value="1" />
+            </div>
+
+            <div class="field">
+              <span class="label">Stress level</span>
+              <div class="segmented" role="radiogroup" aria-label="Stress level">
+                <input type="radio" id="s-low" name="Stress_Level" value="Low" /><label for="s-low">Low</label>
+                <input type="radio" id="s-med" name="Stress_Level" value="Medium" checked /><label for="s-med">Medium</label>
+                <input type="radio" id="s-high" name="Stress_Level" value="High" /><label for="s-high">High</label>
+                <input type="radio" id="s-vhigh" name="Stress_Level" value="Very High" /><label for="s-vhigh">Very high</label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <button type="submit" id="submit-btn" class="primary">Predict score</button>
+      </form>
+
+      <aside class="result panel" aria-live="polite">
+        <div class="gauge-wrap">
+          <svg viewBox="0 0 220 125" class="gauge" role="img" aria-label="Score gauge">
+            <path class="track" d="M 20 110 A 90 90 0 0 1 200 110" />
+            <path id="arc" class="arc" d="M 20 110 A 90 90 0 0 1 200 110" />
+          </svg>
+          <div class="reading">
+            <span id="score" class="score">–</span>
+            <span class="scale">out of 10</span>
+          </div>
+        </div>
+
+        <p id="badge" class="badge" hidden></p>
+        <p id="message" class="message">Fill in the form and select Predict score to see the result.</p>
+        <p id="error" class="error" role="alert" hidden></p>
+
+        <p class="note">This is a statistical estimate from survey data, not a diagnosis. If you're struggling, talk to a counsellor or a doctor.</p>
+      </aside>
+    </div>
+  </main>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
